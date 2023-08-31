@@ -1,29 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import GifList from './GifList';
-import GifSearch from './GifSearch';
+import React,{ useState,useEffect} from 'react'
+import GifList from './GifList'
+import GifSearch from './GifSearch'
+const GifListContainer = () => {
 
-function GifListContainer() {
-  const [gifs, setGifs] = useState([]);
-
-  const fetchGifs = (query = " ") => {
-    fetch(`https://api.giphy.com/v1/gifs/search?q=${query}&api_key=vhzyWykycVi0E41oO7ZbMvpa32Kz1whn&rating=g`)
+    const[gif, setGif] = useState([])
+    const [search, setSearch] = useState("dolphins");
     
-      .then(response => response.json())
-      .then(({data}) => {
-        setGifs(data.map(gif => ({ url: gif.images.original.url })));
-      });
-  }
+    const apiKey='1iwYJT1yONNHCIeXGdp7ZHi5KcGBZKYx';
 
-  useEffect(() => {
-    fetchGifs();
-  }, []); // The empty array means this useEffect runs once after initial render (like componentDidMount)
+    useEffect(()=>{
+        fetch(`https://api.giphy.com/v1/gifs/search?q=${search}&api_key=${apiKey}&rating=g`)
+        .then((res)=>res.json())
+        .then(({data})=>{
+            const gifs = data.slice(0,3).map((gif) => ({ url: gif.images.original.url }));
+            setGif(gifs);
+            
+        })
+    
+    },[search])
 
   return (
-    <div>
-      <GifSearch fetchGifs={fetchGifs} />
-      <GifList gifs={gifs} />
+    <div style={{display:'flex',justifyContent:'space-around'}}>
+     <GifList  gifs={gif} />
+      <GifSearch onSubmitQuery={setSearch} />
     </div>
-  );
+  )
 }
 
-export default GifListContainer;
+export default GifListContainer

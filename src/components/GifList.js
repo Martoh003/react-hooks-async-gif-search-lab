@@ -1,11 +1,16 @@
-import React from 'react';
+import React from 'react'
 
-function GifList(props) {
+const GifList = ({gifs}) => {
   return (
-    <ul>
-      {props.gifs.map((gif, index) => <li key={index}><img src={gif.url} alt="gif" /></li>)}
-    </ul>
-  );
+    <ul className='gif-container'>
+      {gifs.map((gif) => (
+        <li className='gif-li' key={gif.url}>
+          <img className='gif-img' src={gif.url} alt="gif" />
+        </li>
+      ))}
+  </ul>
+    
+  )
 }
 
-export default GifList;
+export default GifList
